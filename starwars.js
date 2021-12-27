@@ -5,6 +5,7 @@
 //  - Quando um filme for clicado, exibir sua introdução
 import {play} from "./music.js"
 import {decimalParaRomano} from "./roman.js"
+import {restartAnimation} from "./restart-animation.js"
 
 const API_ENDPOINT = 'https://swapi.dev/api'
 const MUSIC = {
@@ -27,8 +28,17 @@ function preencheFilme(filmes){
     filmes.forEach(element => {
         let filmeEl = document.createElement('li');
         filmeEl.innerHTML = `Episode ${decimalParaRomano(element.episode_id).padEnd(3, ' ')} - ${element.title}`
+        filmeEl.addEventListener('click', (e) => {
+            let introEl = document.querySelector('pre.introducao');
+            introEl.innerHTML = `Episode ${decimalParaRomano(element.episode_id)}
+                ${element.title.toUpperCase()}
+                ${element.opening_crawl}
+            `;
+            restartAnimation(introEl);
+        })
         filmesNode.appendChild(filmeEl);
     });
 }
 
 preencheFilme(filmes);
+
